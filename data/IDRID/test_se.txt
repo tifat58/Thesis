@@ -1,0 +1,14 @@
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_71.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_71_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_59.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_59_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_72.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_72_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_56.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_56_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_55.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_55_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_73.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_73_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_68.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_68_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_74.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_74_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_61.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_61_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_60.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_60_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_70.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_70_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_64.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_64_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_67.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_67_SE.tif
+A. Segmentation/1. Original Images/b. Testing Set/IDRiD_75.jpg,A. Segmentation/2. All Segmentation Groundtruths/b. Testing Set/4. Soft Exudates/IDRiD_75_SE.tif
