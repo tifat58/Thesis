@@ -190,9 +190,9 @@ def adjust_learning_rate(args, optimizer, epoch, iter, max_batches):
 
 def train_validate_covid(args):
     # load the model
-    model = net.JCS(pretrained='/mnt/sda/haal02-data/models/jcs_model_zoo/5stages_vgg16_bn-6c64b313.pth')
+    # model = net.JCS(pretrained='/mnt/sda/haal02-data/models/jcs_model_zoo/5stages_vgg16_bn-6c64b313.pth')
 #     model = net.JCS(pretrained='snapshots/18_08/single_pretrained_full_seg_idrid_sg_mean_200epoch_latest/best_model.pth')
-#     model = net.JCS()
+    model = net.JCS()
 
     args.savedir = args.savedir + '/'
     # create the directory if not exist
@@ -223,12 +223,14 @@ def train_validate_covid(args):
         A.Resize(width=args.width, height=args.height),
         A.HorizontalFlip(p=0.5),
         A.RandomBrightnessContrast(p=0.2),
-        ToTensorV2()
+        ToTensorV2(),
+        A.Normalize(*NORMALISE_PARAMS)
     ])
     
     b_transform = A.Compose([
         A.Resize(width=args.width, height=args.height),
-        ToTensorV2()
+        ToTensorV2(),
+        A.Normalize(*NORMALISE_PARAMS)
     ])
     
     
@@ -267,6 +269,7 @@ def train_validate_covid(args):
 
     # since we training from scratch, we create data loaders at different scales
     # so that we can generate more augmented data and prevent the network from overfitting
+
     trainLoader_main = torch.utils.data.DataLoader(
         Dataset(args.data_dir, 'train', transform=a_transform),
         batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=False, drop_last=True)
@@ -277,6 +280,7 @@ def train_validate_covid(args):
 
     max_batches = len(trainLoader_main) #+ len(trainLoader_scale1) + len(trainLoader_scale2)
     print('max_batches {}'.format(max_batches))
+
     if args.gpu:
         cudnn.benchmark = True
 
