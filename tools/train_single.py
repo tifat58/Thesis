@@ -107,16 +107,17 @@ def val(args, val_loader, model, criterion):
         # compute the confusion matrix
         if args.gpu and torch.cuda.device_count() > 1:
             output = gather(output, 0, dim=0)
-        sal_eval_val.add_batch(output[:, 0, :, :],  target_var)
+#         sal_eval_val.add_batch(output[:, 0, 1, :, :],  target_var[:, 1, :, :])
         if iter % 50 == 0 or iter == len(val_loader) - 1:
             print('[%d/%d] loss: %.3f time: %.3f' % (iter, total_batches, loss.data.item(), time_taken))
 
     average_epoch_loss_val = sum(epoch_loss) / len(epoch_loss)
-    IoU, MAE = sal_eval_val.get_metric()
+#     IoU, MAE = sal_eval_val.get_metric()
     
-    auc_roc_score, auc_pr_score = sal_eval_val.get_auc_roc()
+#     auc_roc_score, auc_pr_score = sal_eval_val.get_auc_roc()
     
-    return average_epoch_loss_val, IoU, MAE, auc_roc_score, auc_pr_score
+#     return average_epoch_loss_val, IoU, MAE, auc_roc_score, auc_pr_score
+    return average_epoch_loss_val
 
 
 def train(args, train_loader, model, criterion, optimizer, epoch, max_batches, cur_iter=0):
@@ -157,18 +158,19 @@ def train(args, train_loader, model, criterion, optimizer, epoch, max_batches, c
        
 
         with torch.no_grad():
-            sal_eval_train.add_batch(output[:, 0, 1, :, :] , target_var[:, 1, :, :]) #change this for all
+#             sal_eval_train.add_batch(output[:, 0, 1, :, :] , target_var[:, 1, :, :]) #change this for all
             print('running')
         if iter % 20 == 0 or iter == len(train_loader) - 1:
             print('[%d/%d] iteration: [%d/%d] lr: %.7f loss: %.3f time:%.3f' % (iter, \
                     total_batches, iter+cur_iter, max_batches*args.max_epochs, lr, \
                     loss.data.item(), time_taken))
     average_epoch_loss_train = sum(epoch_loss) / len(epoch_loss)
-    IoU, MAE = sal_eval_train.get_metric()
+#     IoU, MAE = sal_eval_train.get_metric()
     
-    auc_roc_score, auc_pr_score = sal_eval_train.get_auc_roc()
+#     auc_roc_score, auc_pr_score = sal_eval_train.get_auc_roc()
 
-    return average_epoch_loss_train, IoU, MAE, lr, auc_roc_score, auc_pr_score
+#     return average_epoch_loss_train, IoU, MAE, lr, auc_roc_score, auc_pr_score
+    return average_epoch_loss_train, lr
 
 
 def adjust_learning_rate(args, optimizer, epoch, iter, max_batches):
@@ -188,7 +190,7 @@ def adjust_learning_rate(args, optimizer, epoch, iter, max_batches):
 
 def train_validate_covid(args):
     # load the model
-    model = net.JCS(pretrained='model_zoo/5stages_vgg16_bn-6c64b313.pth')
+    model = net.JCS(pretrained='/mnt/sda/haal02-data/models/jcs_model_zoo/5stages_vgg16_bn-6c64b313.pth')
 #     model = net.JCS(pretrained='snapshots/18_08/single_pretrained_full_seg_idrid_sg_mean_200epoch_latest/best_model.pth')
 #     model = net.JCS()
 
@@ -218,50 +220,50 @@ def train_validate_covid(args):
     
     
     a_transform = A.Compose([
-        A.Resize(width=256, height=256),
+        A.Resize(width=args.width, height=args.height),
         A.HorizontalFlip(p=0.5),
         A.RandomBrightnessContrast(p=0.2),
         ToTensorV2()
     ])
     
     b_transform = A.Compose([
-        A.Resize(width=256, height=256),
+        A.Resize(width=args.width, height=args.height),
         ToTensorV2()
     ])
     
     
-    # compose the data with transforms
-    trainDataset_main = myTransforms.Compose([
-        myTransforms.Normalize(*NORMALISE_PARAMS),
-        myTransforms.Scale(args.width, args.height),
-        myTransforms.RandomCropResize(int(7./224.*args.width)),
-        myTransforms.RandomFlip(),
-        #myTransforms.GaussianNoise(),
-        myTransforms.ToTensor()
-    ])
-
-    trainDataset_scale1 = myTransforms.Compose([
+#     # compose the data with transforms
+#     trainDataset_main = myTransforms.Compose([
 #         myTransforms.Normalize(*NORMALISE_PARAMS),
-        #myTransforms.Scale(512, 512),
-        myTransforms.Scale(352, 352),
+#         myTransforms.Scale(args.width, args.height),
 #         myTransforms.RandomCropResize(int(7./224.*args.width)),
 #         myTransforms.RandomFlip(),
-        myTransforms.ToTensor()
-    ])
-    trainDataset_scale2 = myTransforms.Compose([
-        myTransforms.Normalize(*NORMALISE_PARAMS),
-        #myTransforms.Scale(1024, 1024),
-        myTransforms.Scale(448, 448),
-        myTransforms.RandomCropResize(int(7./224.*args.width)),
-        myTransforms.RandomFlip(),
-        myTransforms.ToTensor()
-    ])
+#         #myTransforms.GaussianNoise(),
+#         myTransforms.ToTensor()
+#     ])
 
-    valDataset = myTransforms.Compose([
-        myTransforms.Normalize(*NORMALISE_PARAMS),
-        myTransforms.Scale(args.width, args.height),
-        myTransforms.ToTensor()
-    ])
+#     trainDataset_scale1 = myTransforms.Compose([
+# #         myTransforms.Normalize(*NORMALISE_PARAMS),
+#         #myTransforms.Scale(512, 512),
+#         myTransforms.Scale(352, 352),
+# #         myTransforms.RandomCropResize(int(7./224.*args.width)),
+# #         myTransforms.RandomFlip(),
+#         myTransforms.ToTensor()
+#     ])
+#     trainDataset_scale2 = myTransforms.Compose([
+#         myTransforms.Normalize(*NORMALISE_PARAMS),
+#         #myTransforms.Scale(1024, 1024),
+#         myTransforms.Scale(448, 448),
+#         myTransforms.RandomCropResize(int(7./224.*args.width)),
+#         myTransforms.RandomFlip(),
+#         myTransforms.ToTensor()
+#     ])
+
+#     valDataset = myTransforms.Compose([
+#         myTransforms.Normalize(*NORMALISE_PARAMS),
+#         myTransforms.Scale(args.width, args.height),
+#         myTransforms.ToTensor()
+#     ])
 
     # since we training from scratch, we create data loaders at different scales
     # so that we can generate more augmented data and prevent the network from overfitting
@@ -314,13 +316,18 @@ def train_validate_covid(args):
     best_auc_roc_val = 0.0
     for epoch in range(start_epoch, args.max_epochs):
         # train for one epoch
-        loss_tr, IoU_tr, MAE_tr, lr, auc_roc_tr, auc_pr_tr = \
+#         loss_tr, IoU_tr, MAE_tr, lr, auc_roc_tr, auc_pr_tr = \
+#             train(args, trainLoader_main, model, criteria, optimizer, epoch, max_batches, cur_iter)
+        loss_tr, lr = \
             train(args, trainLoader_main, model, criteria, optimizer, epoch, max_batches, cur_iter)
+        IoU_tr, MAE_tr, auc_roc_tr, auc_pr_tr = 0, 0, 0, 0
         cur_iter += len(trainLoader_main)
         torch.cuda.empty_cache()
 
         # evaluate on validation set
-        loss_val, IoU_val, MAE_val, auc_roc_val, auc_pr_val = val(args, valLoader, model, criteria)
+#         loss_val, IoU_val, MAE_val, auc_roc_val, auc_pr_val = val(args, valLoader, model, criteria)
+        loss_val = val(args, valLoader, model, criteria)
+        IoU_val, MAE_val, auc_roc_val, auc_pr_val = 0, 0, 0, 0
         torch.cuda.empty_cache()
 
         torch.save({
